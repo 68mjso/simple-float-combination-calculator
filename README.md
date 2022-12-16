@@ -10,9 +10,9 @@ Example:
 
 3. Input in the `config.py` file
 
-`min`: Min float of the target item
-`max`: Max float of the target item
-`target`: Desired float
+`min`: Min float of the target item <br/>
+`max`: Max float of the target item <br/>
+`target`: Desired float <br/>
 
 4. Run `index.py` file
 
