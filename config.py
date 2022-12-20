@@ -1,3 +1,3 @@
-min=0.06
-max=0.8
-target=0.6666666
+min=0
+max=1
+target=0.66666665
