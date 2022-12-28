@@ -32,9 +32,10 @@ def printCombination(arr, n, r):
 def combinationUtil(arr, data, start, end, index, r):
     if (index == r):
         rsum = sum(data)
+        print(numpy.float64(rsum/10)*diff+min)
         if(numpy.float32(numpy.float64(rsum/10)) == numpy.float32(target_avg)):
-            if(numpy.float32(numpy.float64(rsum/10)*diff-min) == numpy.float32(target)):
-                print(data,numpy.float64(numpy.float64(rsum/10)*diff-min))
+            if(numpy.float32(numpy.float64(rsum/10)*diff+min) == numpy.float32(target)):
+                print(data,numpy.float64(numpy.float64(rsum/10)*diff+min))
                 return True
         return
     i = start
