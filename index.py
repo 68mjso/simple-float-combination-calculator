@@ -14,8 +14,9 @@ raw_input_arr = inputFile.read().split(',')
 input_arr = [numpy.float64(i) for i in raw_input_arr]
 
 arr = input_arr
-if(len(core_arr) > 0):
-    arr = numpy.append(core_arr,input_arr)
+# if(len(core_arr) > 0):
+#     arr = numpy.append(core_arr,input_arr)
+sumCore = sum(core_arr)
 diff = max-min
 
 target_avg = numpy.float64((target - min) / diff)
@@ -31,8 +32,7 @@ def printCombination(arr, n, r):
 
 def combinationUtil(arr, data, start, end, index, r):
     if (index == r):
-        rsum = sum(data)
-        print(numpy.float64(rsum/10)*diff+min)
+        rsum = sum(data) + sumCore
         if(numpy.float32(numpy.float64(rsum/10)) == numpy.float32(target_avg)):
             if(numpy.float32(numpy.float64(rsum/10)*diff+min) == numpy.float32(target)):
                 print(data,numpy.float64(numpy.float64(rsum/10)*diff+min))
