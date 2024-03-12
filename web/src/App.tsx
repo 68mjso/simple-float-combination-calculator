@@ -1,4 +1,4 @@
-import HomePage from "./containers/HomePage";
+import HomePage from "@/containers/HomePage";
 
 function App() {
   return <HomePage />;

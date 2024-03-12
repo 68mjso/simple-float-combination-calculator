@@ -1,5 +1,4 @@
 import numpy
-import struct
 from config import config_min, config_target, config_target_min, config_target_max
 from ieee_754 import ieee_754_conversion
 
