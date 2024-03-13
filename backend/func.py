@@ -87,10 +87,12 @@ def combination_util_sorted(
     using_arr: list,
     remain,
 ):
+    if index == r - 2 and min(arr) + max(arr) < remain:
+        return {"result": False, "arr": using_arr}
     if index == r - 1:
         result_sum = sum(data) / 10
         result_diff = (diff_target - result_sum) * 10
-        if result_diff < min(arr):
+        if result_diff < min(arr) or result_diff > 1:
             return {"result": False, "arr": using_arr}
         sorted_arr = sorted(arr, key=lambda x: abs(result_diff - x), reverse=False)
         sliced_arr = sorted_arr[0:2]
@@ -118,7 +120,7 @@ def combination_util_sorted(
     i = start
     while i <= end and end - i + 1 >= r - index:
         data[index] = arr[i]
-        remain = remain - (arr[i] / 10)
+        remain_result = remain - (arr[i] / 10)
         avg_float_remain = remain / (r - index - 1) * 10
         remain_arr = arr.copy()
         remain_arr.remove(arr[i])
@@ -138,7 +140,7 @@ def combination_util_sorted(
             target_avg=target_avg,
             found=found,
             using_arr=using_arr,
-            remain=remain,
+            remain=remain_result,
         )
         if result["result"] == True:
             return {"result": True, "arr": result["arr"]}
