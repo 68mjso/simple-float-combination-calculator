@@ -1,6 +1,6 @@
 import HomePage from "@/containers/HomePage";
 import SteamRetrievePage from "@/containers/SteamRetrievePage";
-import { VStack } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./containers/Root";
 
@@ -10,7 +10,7 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       {
-        path: "/home",
+        path: "/",
         element: <HomePage />,
       },
       {
@@ -22,9 +22,9 @@ const router = createBrowserRouter([
 ]);
 function App() {
   return (
-    <VStack w="full">
+    <Box w="100vw" h="100vh" overflowX="hidden" bg="gray.200">
       <RouterProvider router={router} />;
-    </VStack>
+    </Box>
   );
 }
 

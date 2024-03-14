@@ -1,13 +1,13 @@
+import InputForm from "@/components/InputForm";
+import NavigationBar from "@/components/NavigationBar";
 import ResultRow from "@/components/ResultRow";
-import { CombinationResult } from "@/models/CombinationResult";
 import { CombinationResponse } from "@/models/CombinationResponse";
-import { Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
-import { Textarea } from "@chakra-ui/react";
+import { CombinationResult } from "@/models/CombinationResult";
+import { Box, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
 import socket from "@socket";
 import React from "react";
+import HomeSetting from "./HomeSetting";
 function HomePage() {
-  const [core, setCore] = React.useState("");
-  const [input, setInput] = React.useState("");
   const [resultData, setResultData] = React.useState<Array<CombinationResult>>(
     []
   );
@@ -28,47 +28,31 @@ function HomePage() {
       setResultData(arr);
     });
   }, []);
-  const handleSubmit = () => {
+  const handleSubmit = (core: string, input: string) => {
     socket.emit("calculate-combination", {
       core_arr: core,
       input_arr: input,
     });
   };
   return (
-    <Flex w="100%" justifyContent="center" p={4}>
-      <Grid templateColumns="repeat(2, 1fr)" w="full" gap={4}>
-        <GridItem colSpan={{ base: 2, lg: 1 }}>
-          <Grid templateColumns="repeat(2, 1fr)" w="full" gap={4}>
-            <GridItem colSpan={2} gap={4}>
-              <Text>Core:</Text>
-              <Textarea
-                value={core}
-                onChange={(e) => setCore(e.target.value)}
-                placeholder="Here is a sample placeholder"
-              />
-            </GridItem>
-            <GridItem colSpan={2}>
-              <Text>Input:</Text>
-              <Textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Here is a sample placeholder"
-              />
-            </GridItem>
-            <GridItem colSpan={2}>
-              <Button w="full" onClick={handleSubmit}>
-                Calculate
-              </Button>
-            </GridItem>
-          </Grid>
-        </GridItem>
-        <GridItem colSpan={{ base: 2, lg: 1 }}>
-          <ResultRow result={test} />
-          {resultData.map((e: CombinationResult, i: number) => (
-            <ResultRow key={`result-${i}`} result={e} />
-          ))}
-        </GridItem>
-      </Grid>
+    <Flex w={960} justifyContent="center" position="relative">
+      <NavigationBar />
+      <HomeSetting />
+      <Box w="full" p={8} shadow="lg" bg="brand.300">
+        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+          <GridItem colSpan={{ base: 2, lg: 2 }}>
+            <InputForm handleSubmit={handleSubmit} />
+          </GridItem>
+          <GridItem colSpan={{ base: 2, lg: 2 }}>
+            <VStack w="full" gap={4}>
+              <ResultRow result={test} />
+              {resultData.map((e: CombinationResult, i: number) => (
+                <ResultRow key={`result-${i}`} result={e} />
+              ))}
+            </VStack>
+          </GridItem>
+        </Grid>
+      </Box>
     </Flex>
   );
 }

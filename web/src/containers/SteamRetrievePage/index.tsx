@@ -1,14 +1,28 @@
+import NavigationBar from "@/components/NavigationBar";
 import { SteamInventoryDescription } from "@/models/SteamInventoryDescription";
 import { SteamInventoryResponse } from "@/models/SteamInventoryResponse";
 import { CSFloat } from "@/services/CSFloat";
 import { SteamAPI } from "@/services/SteamAPI";
 import { BASE_INSPECT_LINK } from "@/utilities/api-path";
-import { Button, Grid, GridItem, HStack, Select } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  HStack,
+  Select,
+  Textarea,
+  VStack,
+} from "@chakra-ui/react";
 import React from "react";
+import SteamSetting from "./SteamSetting";
+import CustomTextarea from "@/components/CustomTextarea";
 
 function SteamRetrievePage() {
   const steamAPI = new SteamAPI();
   const csFloat = new CSFloat();
+  const [floatList, setFloatList] = React.useState("");
   const [itemList, setItemList] = React.useState(null);
   const [selectedItem, setSelectedItem] = React.useState("");
   async function handleRetrieveInventory() {
@@ -67,21 +81,43 @@ function SteamRetrievePage() {
     handleRetrieveInventory();
   }, []);
   return (
-    <HStack w="full">
-      <Grid templateColumns="repeat(12, 1fr)" gap={4}>
-        <GridItem colSpan={6}>
-          <Select
-            value={selectedItem}
-            onChange={(e) => setSelectedItem(e.target.value)}
-          >
-            {generateOptions()}
-          </Select>
-        </GridItem>
-        <GridItem colSpan={2}>
-          <Button onClick={getItemFloat}>Get</Button>
-        </GridItem>
-      </Grid>
-    </HStack>
+    <Flex w={960} minH={800} justifyContent="center" position="relative">
+      <NavigationBar />
+      <SteamSetting onClick={() => getItemFloat} />
+      <Box w="full" p={8} shadow="lg" bg="brand.300">
+        <VStack w="full">
+          <VStack w="full">
+            <Select
+              value={selectedItem}
+              onChange={(e) => setSelectedItem(e.target.value)}
+              bg="white"
+              borderColor="brand.100"
+              borderWidth="2px"
+              borderRadius={8}
+            >
+              {generateOptions()}
+            </Select>
+            <Grid
+              templateColumns="repeat(12, 1fr)"
+              gap={4}
+              minH={400}
+              bg="white"
+              w="full"
+              borderColor="brand.100"
+              borderWidth="2px"
+              borderRadius={8}
+            >
+              <GridItem colSpan={6}></GridItem>
+            </Grid>
+          </VStack>
+          <CustomTextarea
+            label="Float"
+            value={floatList}
+            onChange={setFloatList}
+          />
+        </VStack>
+      </Box>
+    </Flex>
   );
 }
 
