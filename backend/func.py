@@ -88,12 +88,22 @@ def combination_util_sorted(
     remain,
 ):
     if index == r - 2 and min(arr) + max(arr) < remain:
-        return {"result": False, "arr": using_arr}
+        return {
+            "result": False,
+            "arr": using_arr,
+            "sum_result": "",
+            "converted_sum_result": "",
+        }
     if index == r - 1:
         result_sum = sum(data) / 10
         result_diff = (diff_target - result_sum) * 10
         if result_diff < min(arr) or result_diff > 1:
-            return {"result": False, "arr": using_arr}
+            return {
+                "result": False,
+                "arr": using_arr,
+                "sum_result": "",
+                "converted_sum_result": "",
+            }
         sorted_arr = sorted(arr, key=lambda x: abs(result_diff - x), reverse=False)
         sliced_arr = sorted_arr[0:2]
         for n in sliced_arr:
@@ -114,9 +124,19 @@ def combination_util_sorted(
                 f.close()
                 found = True
                 using_arr = data
-                return {"result": True, "arr": using_arr}
+                return {
+                    "result": True,
+                    "arr": using_arr,
+                    "sum_result": str(avg_result),
+                    "converted_sum_result": str(convert_result),
+                }
         data[index] = 0
-        return {"result": False, "arr": []}
+        return {
+            "result": False,
+            "arr": [],
+            "sum_result": "",
+            "converted_sum_result": "",
+        }
     i = start
     while i <= end and end - i + 1 >= r - index:
         data[index] = arr[i]
@@ -143,6 +163,11 @@ def combination_util_sorted(
             remain=remain_result,
         )
         if result["result"] == True:
-            return {"result": True, "arr": result["arr"]}
+            return {
+                "result": True,
+                "arr": result["arr"],
+                "sum_result": result["sum_result"],
+                "converted_sum_result": result["converted_sum_result"],
+            }
         i += 1
     return {"result": found, "arr": using_arr}
