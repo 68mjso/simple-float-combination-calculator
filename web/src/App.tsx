@@ -1,9 +1,10 @@
+import "@/App.css";
 import HomePage from "@/containers/HomePage";
 import SteamRetrievePage from "@/containers/SteamRetrievePage";
-import { Box, VStack } from "@chakra-ui/react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Box } from "@chakra-ui/react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { AppContextProvider } from "./AppContext";
 import Root from "./containers/Root";
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,9 +23,11 @@ const router = createBrowserRouter([
 ]);
 function App() {
   return (
-    <Box w="100vw" h="100vh" overflowX="hidden" bg="gray.200">
-      <RouterProvider router={router} />;
-    </Box>
+    <AppContextProvider>
+      <Box w="100vw" h="100vh" overflowX="hidden" bg="gray.200">
+        <RouterProvider router={router} />;
+      </Box>
+    </AppContextProvider>
   );
 }
 

@@ -1,12 +1,14 @@
 import { Box, VStack } from "@chakra-ui/react";
 import React from "react";
-import { FaHome } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 import { MdInventory } from "react-icons/md";
 import NavigationButton from "./NavigationButton";
+import AppContext from "@/AppContext";
 function NavigationBar() {
   const [navHover, setNavHover] = React.useState(false);
-  const [current, setCurrent] = React.useState(0);
   const [active, setActive] = React.useState(0);
+  const appContext = React.useContext(AppContext);
+  const { activeRoute, setActiveRoute } = appContext;
   return (
     <Box
       position="absolute"
@@ -19,22 +21,22 @@ function NavigationBar() {
     >
       <VStack gap={4} p={2} bg="white" shadow="lg">
         <NavigationButton
-          to="/"
           active={active}
           setActive={setActive}
+          setActiveRoute={setActiveRoute}
           index={0}
           navHover={navHover}
-          current={current}
-          icon={<FaHome />}
-          text="Home"
+          current={activeRoute}
+          icon={<MdEdit />}
+          text="Input"
         />
         <NavigationButton
-          to="/retrieve-inventory"
           active={active}
           setActive={setActive}
+          setActiveRoute={setActiveRoute}
           index={1}
           navHover={navHover}
-          current={current}
+          current={activeRoute}
           icon={<MdInventory />}
           text="Inventory"
         />

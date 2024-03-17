@@ -3,26 +3,24 @@ import * as router from "react-router-dom";
 function NavigationButton({
   active,
   setActive,
-  to,
   navHover,
   current,
   icon,
   text,
   index,
+  setActiveRoute,
 }: {
   current: number;
   active: number;
   setActive: any;
-  to: string;
   navHover: boolean;
   icon: any;
   text: string;
   index: number;
+  setActiveRoute: (index: number) => void;
 }) {
   return (
     <Button
-      as={router.Link}
-      to={to}
       variant="ghost"
       w="full"
       p={navHover ? 4 : 0}
@@ -33,6 +31,7 @@ function NavigationButton({
       justifyContent={navHover ? "flex-start" : "center"}
       onMouseEnter={() => setActive(index)}
       onMouseLeave={() => setActive(current)}
+      onClick={() => setActiveRoute(index)}
       gap={3}
       alignItems="center"
       lineHeight={0}

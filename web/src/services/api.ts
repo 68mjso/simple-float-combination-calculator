@@ -1,11 +1,11 @@
 import axios from "axios";
-import { INSPECT_ITEM_BULK } from "@/utilities/api-path";
 import { CSGOFLOAT_API_KEY } from "@/utilities/config";
+import { BASE_CS_FLOAT } from "@/utilities/api-path";
 
 axios.interceptors.request.use(
   (req: any) => {
     req.headers["Content-Type"] = "application/json";
-    if (req.url.includes(INSPECT_ITEM_BULK)) {
+    if (req.url.includes(BASE_CS_FLOAT)) {
       req.headers["Authorization"] = CSGOFLOAT_API_KEY;
     }
     // if (req.method.toLowerCase() === "get") {
@@ -41,6 +41,6 @@ export class API {
   };
 
   get = (url: string) => {
-    return axios.get(url);
+    return axios.get(url, { withCredentials: true });
   };
 }

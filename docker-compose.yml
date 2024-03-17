@@ -1,0 +1,14 @@
+services:
+  web:
+    image: float-fe
+    command: "npm run dev"
+    ports:
+      - 5173:5173
+    links:
+      - backend
+  
+  backend:
+    image: float-be
+    ports:
+      - 8000:8000
+

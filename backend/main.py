@@ -21,6 +21,7 @@ def connect(namespace, sid, data):
 
 @sio.on("calculate-combination")
 async def handle_calculate_combination(sid, data):
+    print('start')
     core_arr = []
     input_arr = []
     raw_core_arr = data["core_arr"].split(",")
@@ -87,7 +88,18 @@ async def handle_calculate_combination(sid, data):
             )
             await sio.emit(
                 "combination-result",
-                {"time": time_stop - time_start, "result": result_arr},
+                {
+                    "result": result_arr,
+                    "completed": False,
+                },
             )
-
+        await sio.sleep(0)
+    print("end")
+    await sio.emit(
+        "combination-result",
+        {
+            "result": result_arr,
+            "completed": True,
+        },
+    )
     pass
