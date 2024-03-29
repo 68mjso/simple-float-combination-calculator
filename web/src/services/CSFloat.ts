@@ -11,9 +11,7 @@ export class CSFloat {
   constructor() {}
 
   getInventory = () => {
-    return this.api.get(
-      "https://run.mocky.io/v3/cf5ef327-ca3f-47bc-a478-4ba7590579e9"
-    );
+    return this.api.get("./inventory.json");
     // return this.api.get(BASE_CSFLOAT_INVENTORY);
   };
 
