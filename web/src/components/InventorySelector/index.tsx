@@ -29,21 +29,14 @@ function InventorySelector() {
         borderWidth={2}
         borderRadius={10}
         value={inventoryFilter}
-        onChange={setInventoryFilter}
-        w={200}
-        h={10}
+        onChange={(e) => setInventoryFilter(e.target.value)}
+        w="full"
+        size="sm"
       >
         <option value="">All</option>
         {generateOptions(inventoryList)}
       </Select>
-      <Box
-        overflowY="scroll"
-        h={200}
-        className="inventory-box"
-        px={8}
-        py={4}
-        w="full"
-      >
+      <Box overflowY="scroll" h={180} className="inventory-box" py={4} w="full">
         <Grid templateColumns="repeat(3, 1fr)" w="full" gap={2}>
           {inventoryList
             ? inventoryList.map((e: any, i: number) => (
@@ -51,19 +44,14 @@ function InventorySelector() {
                   key={`inventory-item-${i}`}
                   colSpan={{ base: 1, lg: 1 }}
                   overflow="hidden"
-                  borderRadius={50}
+                  borderRadius={10}
                   borderWidth={2}
                   borderColor="brand.100"
                   bg="white"
                   shadow="lg"
                   cursor="pointer"
-                  _hover={{ shadow: "dark-lg" }}
                 >
-                  <InventoryItem
-                    label={e.float_value}
-                    imgUrl={e.icon_url}
-                    name={e.item_name}
-                  />
+                  <InventoryItem label={e.float_value} name={e.item_name} />
                 </GridItem>
               ))
             : null}

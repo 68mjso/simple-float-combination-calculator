@@ -11,8 +11,8 @@ export class CSFloat {
   constructor() {}
 
   getInventory = () => {
-    return this.api.get("./inventory.json");
-    // return this.api.get(BASE_CSFLOAT_INVENTORY);
+    // return this.api.get("./inventory.json");
+    return this.api.get(BASE_CSFLOAT_INVENTORY);
   };
 
   getItemBulk = (links: Array<any>) => {

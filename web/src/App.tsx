@@ -1,6 +1,5 @@
 import "@/App.css";
 import HomePage from "@/containers/HomePage";
-import SteamRetrievePage from "@/containers/SteamRetrievePage";
 import { Box } from "@chakra-ui/react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AppContextProvider } from "./AppContext";
@@ -13,10 +12,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
-      },
-      {
-        path: "/retrieve-inventory",
-        element: <SteamRetrievePage />,
       },
     ],
   },

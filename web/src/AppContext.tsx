@@ -22,13 +22,13 @@ interface AppContextProviderProps {
 }
 
 function AppContextProvider({ children }: AppContextProviderProps) {
-  const [inventoryFilter, setInventoryFilter] = useState("");
   const [activeRoute, setActiveRoute] = useState(0);
   const [isCombinationLoading, setIsCombinationLoading] = useState(false);
   const [combinationResultData, setCombinationResultData] = React.useState<
     Array<CombinationResult>
   >([]);
   const [inventoryList, setInventoryList] = useState([]);
+  const [inventoryFilter, setInventoryFilter] = useState("");
   return (
     <AppContext.Provider
       value={{

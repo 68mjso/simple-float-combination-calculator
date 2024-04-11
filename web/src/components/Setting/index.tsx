@@ -2,7 +2,7 @@ import CustomNumberInput from "@/components/CustomNumberInput";
 import { Text, VStack } from "@chakra-ui/react";
 import React from "react";
 
-function HomeSetting() {
+function Setting() {
   const [target, setTarget] = React.useState(0.6666666);
   const [noc, setNoc] = React.useState(4);
   const [min, setMin] = React.useState(0.06);
@@ -15,7 +15,7 @@ function HomeSetting() {
     return (target - min) / (max - min);
   }
   return (
-    <VStack w={200} position="absolute" right={-220} gap={4}>
+    <VStack w="full" gap={4}>
       <VStack w="full" bg="brand.300" p={4} shadow="lg">
         <CustomNumberInput label="Target" value={target} onChange={setTarget} />
         <CustomNumberInput label="Num of core" value={noc} onChange={setNoc} />
@@ -34,4 +34,4 @@ function HomeSetting() {
   );
 }
 
-export default HomeSetting;
+export default Setting;
