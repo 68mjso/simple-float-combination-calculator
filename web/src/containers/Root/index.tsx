@@ -1,3 +1,4 @@
+import InfoBox from "@/components/InfoBox";
 import NavigationBar from "@/components/NavigationBar";
 import HomeSetting from "@/components/Setting";
 import { Grid, GridItem, VStack } from "@chakra-ui/react";
@@ -12,13 +13,16 @@ function Root() {
       alignItems="flex-start"
     >
       <GridItem colSpan={2}>
-        <VStack>
-          <NavigationBar />
-          <HomeSetting />
-        </VStack>
+        <NavigationBar />
       </GridItem>
-      <GridItem colSpan={10}>
+      <GridItem colSpan={8}>
         <Outlet />
+      </GridItem>
+      <GridItem colSpan={2}>
+        <VStack>
+          <HomeSetting />
+          <InfoBox />
+        </VStack>
       </GridItem>
     </Grid>
   );

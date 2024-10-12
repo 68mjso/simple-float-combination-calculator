@@ -19,13 +19,6 @@ function NavigationBar() {
           icon={<MdEdit />}
           text="Calculator"
         />
-        <NavigationButton
-          active={active}
-          setActive={setActive}
-          index={1}
-          icon={<MdEdit />}
-          text="Edit Input"
-        />
         {/* <NavigationButton
           active={active}
           setActive={setActive}

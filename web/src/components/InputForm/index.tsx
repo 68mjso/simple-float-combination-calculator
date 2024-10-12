@@ -1,4 +1,5 @@
 import AppContext from "@/AppContext";
+import { Input } from "@/models/Input";
 import { groupBy } from "@/utilities/func";
 import {
   Button,
@@ -16,7 +17,7 @@ import {
 import React from "react";
 import CustomTextarea from "../CustomTextarea";
 import InventorySelector from "../InventorySelector";
-import { Input } from "@/models/Input";
+import CustomNumberInput from "../CustomNumberInput";
 function InputForm({
   handleSubmit,
   isLoading,
@@ -34,8 +35,20 @@ function InputForm({
     input6: "",
   });
   const appContext = React.useContext(AppContext);
-  const { activeRoute, inventoryFilter, setInventoryFilter, inventoryList } =
-    appContext;
+  const {
+    activeRoute,
+    inventoryFilter,
+    setInventoryFilter,
+    inventoryList,
+    inputTarget,
+    setInputTarget,
+    inputMin,
+    setInputMin,
+    inputMax,
+    setInputMax,
+    inputTimeout,
+    setInputTimeout,
+  } = appContext;
   const getActiveComponent = () => {
     switch (activeRoute) {
       case 0:
@@ -100,6 +113,7 @@ function InputForm({
                     color: "brand.100",
                     borderBottomColor: "brand.100",
                   }}
+                  key={`input-tab-${i}`}
                 >
                   Input {i + 1}
                 </Tab>
@@ -107,7 +121,7 @@ function InputForm({
             </TabList>
             <TabPanels>
               {Object.keys(input).map((_, i) => (
-                <TabPanel>
+                <TabPanel key={`input-area-${i}`}>
                   <CustomTextarea
                     value={input[`input${i + 1}`]}
                     onChange={(e: string) => {
@@ -140,6 +154,36 @@ function InputForm({
         </Select>
         <Button onClick={copyText}>Copy</Button>
       </HStack> */}
+      <Grid templateColumns="repeat(4, 1fr)" w="full" gap={10} px={4}>
+        <GridItem>
+          <CustomNumberInput
+            label="Min Float"
+            value={inputMin}
+            onChange={setInputMin}
+          />
+        </GridItem>
+        <GridItem>
+          <CustomNumberInput
+            label="Max Float"
+            value={inputMax}
+            onChange={setInputMax}
+          />
+        </GridItem>
+        <GridItem>
+          <CustomNumberInput
+            label="Target"
+            value={inputTarget}
+            onChange={setInputTarget}
+          />
+        </GridItem>
+        <GridItem>
+          <CustomNumberInput
+            label="Timeout"
+            value={inputTimeout}
+            onChange={setInputTimeout}
+          />
+        </GridItem>
+      </Grid>
       <Button
         w="full"
         onClick={() => handleSubmit(core, input)}
@@ -148,7 +192,7 @@ function InputForm({
         transition="0.3s all"
         _hover={{ bg: "brand.100" }}
         shadow="lg"
-        // isDisabled={isLoading}
+        isDisabled={isLoading}
         _disabled={{
           bg: "gray.600",
         }}

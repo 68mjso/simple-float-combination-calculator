@@ -87,9 +87,9 @@ def combination_util_sorted(
     using_arr: list,
     remain,
     time_start,
+    timeout,
 ):
-    print(process_time() - time_start)
-    if process_time() - time_start == 30:
+    if process_time() - time_start == timeout:
         return {
             "result": True,
             "arr": [],
@@ -170,7 +170,8 @@ def combination_util_sorted(
             found=found,
             using_arr=using_arr,
             remain=remain_result,
-            time_start=time_start
+            time_start=time_start,
+            timeout=timeout,
         )
         if result["result"] == True:
             return {

@@ -4,11 +4,13 @@ import ResultRow from "@/components/ResultRow";
 import { CombinationResponse } from "@/models/CombinationResponse";
 import { CombinationResult } from "@/models/CombinationResult";
 import { Input } from "@/models/Input";
-import { retrieveCsFloatInventory } from "@/utilities/func";
 import { Box, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
+import { MdContentCopy } from "react-icons/md";
 import socket from "@socket";
 import React from "react";
+import { useToast } from "@chakra-ui/react";
 function HomePage() {
+  const toast = useToast();
   const appContext = React.useContext(AppContext);
   const {
     isCombinationLoading,
@@ -16,7 +18,10 @@ function HomePage() {
     combinationResultData,
     setCombinationResultData,
     setActiveRoute,
-    setInventoryList,
+    inputTimeout,
+    setInputItemList,
+    inputItemList,
+    session,
   } = appContext;
   React.useEffect(() => {
     setActiveRoute(0);
@@ -25,10 +30,10 @@ function HomePage() {
       setCombinationResultData(arr);
       setIsCombinationLoading(!data.completed);
     });
-    retrieveCsFloatInventory().then((res: any) => {
-      const arr = res.filter((e: any) => e.type !== "agent");
-      setInventoryList(arr);
-    });
+    // retrieveCsFloatInventory().then((res: any) => {
+    //   const arr = res.filter((e: any) => e.type !== "agent");
+    //   setInventoryList(arr);
+    // });
   }, []);
   const handleSubmit = (core: string, input: Input) => {
     const floatArr = [];
@@ -45,11 +50,38 @@ function HomePage() {
         continue;
       }
     }
-    console.log(floatArr.map((e) => e.float));
-    appContext.setInputItemList(floatArr);
+    setInputItemList(floatArr);
     socket.emit("calculate-combination", {
+      timeout: inputTimeout,
       core_arr: core,
       input_arr: floatArr.map((e) => e.float).join(","),
+    });
+  };
+
+  const copyToClipboard = (cr: CombinationResult) => {
+    const arr = [];
+    console.log(inputItemList);
+    console.log(cr);
+    for (let i = 0; i < cr.input_arr.length; i++) {
+      const item = inputItemList.find((e) => e.float == cr.input_arr[i]);
+      if (!item) {
+        continue;
+      }
+      arr.push(item);
+    }
+    const str = `steamBuyRequiredBulk(${JSON.stringify(arr)},'${session}',0)`;
+    const temp = document.createElement("textarea");
+    document.body.append(temp);
+    temp.value = str;
+    temp.select();
+    document.execCommand("copy");
+    temp.remove();
+    toast({
+      title: "Success",
+      description: "Scirpt has been copied to clipboard.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
     });
   };
   return (
@@ -64,9 +96,30 @@ function HomePage() {
           </GridItem>
           <GridItem colSpan={{ base: 2, lg: 2 }}>
             <VStack w="full" gap={4}>
-              {combinationResultData.map((e: CombinationResult, i: number) => (
-                <ResultRow key={`result-${i}`} result={e} />
-              ))}
+              {combinationResultData.map((e: CombinationResult, i: number) =>
+                e.input_arr.length > 0 ? (
+                  <Box key={`result-${i}`} position="relative">
+                    <Flex
+                      position="absolute"
+                      w="full"
+                      h="full"
+                      backgroundColor="#cccccc00"
+                      borderRadius={8}
+                      _hover={{
+                        cursor: "pointer",
+                        backgroundColor: "#cccccc4d",
+                        transition: "0.25s",
+                      }}
+                      p={2}
+                      justifyContent="flex-end"
+                      onClick={() => copyToClipboard(e)}
+                    >
+                      <MdContentCopy color="#fff" />
+                    </Flex>
+                    <ResultRow result={e} />
+                  </Box>
+                ) : null
+              )}
             </VStack>
           </GridItem>
         </Grid>

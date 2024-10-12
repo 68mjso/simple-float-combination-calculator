@@ -1,14 +1,14 @@
+import threading
+import asyncio
 import socketio
 import numpy
 from collections import Counter
-
 import math
 from config import config_min, config_max, config_target, config_using
 from func import combination_util_sorted
 from time import process_time
 
 sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
-
 app = socketio.ASGIApp(sio)
 
 numpy.set_printoptions(precision=16)
@@ -19,11 +19,11 @@ def connect(namespace, sid, data):
     print("connection established")
 
 
-@sio.on("calculate-combination")
-async def handle_calculate_combination(sid, data):
-    print('start')
+def calculate_combination_task(sid, data, loop):
+    # Function that contains the core logic, extracted from the async method
     core_arr = []
     input_arr = []
+    input_timeout = int(data["timeout"])
     raw_core_arr = data["core_arr"].split(",")
     raw_input_arr = data["input_arr"].split(",")
     core_arr = [numpy.float64(i) for i in raw_core_arr]
@@ -37,22 +37,14 @@ async def handle_calculate_combination(sid, data):
     diff = numpy.subtract(config_max, config_min)
     target_avg = numpy.float64((config_target - config_min) / diff)
     r = 10 - config_using
-
-    # try:
-    #     f = open("output.txt", "w")
-    #     f.write("")
-    #     f.close()
-    # except:
-    #     f = open("output.txt", "x")
-    #     f.close()
     itr = math.floor(len(core_arr) / config_using)
+
     for i in range(itr):
         time_start = process_time()
         itr_core = core_arr[(config_using * i) : (config_using * (i + 1))]
         sum_core_arr = sum(itr_core) / 10
         diff_target = target_avg - sum_core_arr
         diff_avg = diff_target / (10 - len(itr_core)) * 10
-        # Sort the input array
         arr = sorted(input_arr_1, key=lambda x: abs(diff_avg - x), reverse=False)
         n = len(arr)
         data = [0] * r
@@ -70,9 +62,9 @@ async def handle_calculate_combination(sid, data):
             found=found,
             using_arr=using_arr,
             remain=diff_target,
-            time_start=time_start
+            time_start=time_start,
+            timeout=input_timeout,
         )
-        time_stop = process_time()
         if result["result"] == True:
             using_arr = result["arr"]
             for item in using_arr:
@@ -87,20 +79,40 @@ async def handle_calculate_combination(sid, data):
                     "converted_sum_result": result["converted_sum_result"],
                 }
             )
-            await sio.emit(
-                "combination-result",
-                {
-                    "result": result_arr,
-                    "completed": False,
-                },
+            # Emit intermediate results
+            asyncio.run_coroutine_threadsafe(
+                sio.emit(
+                    "combination-result",
+                    {
+                        "result": result_arr,
+                        "completed": False,
+                    },
+                    to=sid,
+                ),
+                loop,
             )
-        await sio.sleep(0)
-    print("end")
-    await sio.emit(
-        "combination-result",
-        {
-            "result": result_arr,
-            "completed": True,
-        },
+        asyncio.run_coroutine_threadsafe(sio.sleep(0), loop)
+
+    # Final result emit
+    asyncio.run_coroutine_threadsafe(
+        sio.emit(
+            "combination-result",
+            {
+                "result": result_arr,
+                "completed": True,
+            },
+            to=sid,
+        ),
+        loop,
     )
-    pass
+    print("Calculation completed")
+
+
+@sio.on("calculate-combination")
+async def handle_calculate_combination(sid, data):
+    print("Starting calculation task")
+    loop = asyncio.get_event_loop()
+    # Start the calculation in a new thread
+    thread = threading.Thread(target=calculate_combination_task, args=(sid, data, loop))
+    thread.start()
+    await sio.sleep(0)
