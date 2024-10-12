@@ -1,34 +1,45 @@
+import AppContext from "@/AppContext";
+import { groupBy } from "@/utilities/func";
 import {
   Button,
   Grid,
   GridItem,
-  HStack,
-  Select,
+  Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
 import CustomTextarea from "../CustomTextarea";
-import { Spinner } from "@chakra-ui/react";
-import AppContext from "@/AppContext";
 import InventorySelector from "../InventorySelector";
-import { groupBy } from "@/utilities/func";
+import { Input } from "@/models/Input";
 function InputForm({
   handleSubmit,
   isLoading,
 }: {
-  handleSubmit: (core: string, input: string) => void;
+  handleSubmit: (core: string, input: Input) => void;
   isLoading: boolean;
 }) {
   const [core, setCore] = React.useState("");
-  const [input, setInput] = React.useState("");
+  const [input, setInput] = React.useState({
+    input1: "",
+    input2: "",
+    input3: "",
+    input4: "",
+    input5: "",
+    input6: "",
+  });
   const appContext = React.useContext(AppContext);
   const { activeRoute, inventoryFilter, setInventoryFilter, inventoryList } =
     appContext;
   const getActiveComponent = () => {
     switch (activeRoute) {
       case 0:
-        return <CustomTextarea label="Core" value={core} onChange={setCore} />;
+        return <CustomTextarea value={core} onChange={setCore} />;
       case 1:
         return <InventorySelector />;
       default:
@@ -62,10 +73,55 @@ function InputForm({
     <VStack gap={4}>
       <Grid templateColumns="repeat(12, 1fr)" w="full" gap={4}>
         <GridItem colSpan={6} gap={4} h={200} borderRadius={10}>
-          {getActiveComponent()}
+          <Tabs variant="line">
+            <TabList mx={4}>
+              <Tab
+                fontWeight="bold"
+                _selected={{
+                  color: "brand.100",
+                  borderBottomColor: "brand.100",
+                }}
+              >
+                Core
+              </Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>{getActiveComponent()}</TabPanel>
+            </TabPanels>
+          </Tabs>
         </GridItem>
         <GridItem colSpan={6}>
-          <CustomTextarea label="Input" value={input} onChange={setInput} />
+          <Tabs variant="line">
+            <TabList mx={4}>
+              {Object.keys(input).map((_, i) => (
+                <Tab
+                  fontWeight="bold"
+                  _selected={{
+                    color: "brand.100",
+                    borderBottomColor: "brand.100",
+                  }}
+                >
+                  Input {i + 1}
+                </Tab>
+              ))}
+            </TabList>
+            <TabPanels>
+              {Object.keys(input).map((_, i) => (
+                <TabPanel>
+                  <CustomTextarea
+                    value={input[`input${i + 1}`]}
+                    onChange={(e: string) => {
+                      const key = `input${i + 1}`;
+                      setInput({
+                        ...input,
+                        [key]: e,
+                      });
+                    }}
+                  />
+                </TabPanel>
+              ))}
+            </TabPanels>
+          </Tabs>
         </GridItem>
       </Grid>
       {/* <HStack>
@@ -92,7 +148,7 @@ function InputForm({
         transition="0.3s all"
         _hover={{ bg: "brand.100" }}
         shadow="lg"
-        isDisabled={isLoading}
+        // isDisabled={isLoading}
         _disabled={{
           bg: "gray.600",
         }}

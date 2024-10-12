@@ -1,6 +1,6 @@
 import NavigationBar from "@/components/NavigationBar";
 import HomeSetting from "@/components/Setting";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, VStack } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 function Root() {
   return (
@@ -12,13 +12,13 @@ function Root() {
       alignItems="flex-start"
     >
       <GridItem colSpan={2}>
-        <NavigationBar />
+        <VStack>
+          <NavigationBar />
+          <HomeSetting />
+        </VStack>
       </GridItem>
-      <GridItem colSpan={8}>
+      <GridItem colSpan={10}>
         <Outlet />
-      </GridItem>
-      <GridItem colSpan={2}>
-        <HomeSetting />
       </GridItem>
     </Grid>
   );

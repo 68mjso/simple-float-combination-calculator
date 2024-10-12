@@ -5,15 +5,17 @@ function CustomTextarea({
   value,
   onChange,
 }: {
-  label: string;
+  label?: string;
   value: any;
   onChange: any;
 }) {
   return (
     <VStack gap={2} alignItems="flex-start" w="full">
-      <Text fontWeight="bold" textColor="brand.100">
-        {label}:
-      </Text>
+      {label ? (
+        <Text fontWeight="bold" textColor="brand.100">
+          {label}:
+        </Text>
+      ) : null}
       <Textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}

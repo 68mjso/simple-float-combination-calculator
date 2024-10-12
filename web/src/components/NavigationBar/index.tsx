@@ -17,7 +17,14 @@ function NavigationBar() {
           setActive={setActive}
           index={0}
           icon={<MdEdit />}
-          text="Input"
+          text="Calculator"
+        />
+        <NavigationButton
+          active={active}
+          setActive={setActive}
+          index={1}
+          icon={<MdEdit />}
+          text="Edit Input"
         />
         {/* <NavigationButton
           active={active}
@@ -26,13 +33,13 @@ function NavigationBar() {
           icon={<MdInventory />}
           text="Inventory"
         /> */}
-        <NavigationButton
+        {/* <NavigationButton
           active={active}
           setActive={setActive}
           index={2}
           icon={<MdOutlineQuestionMark />}
           text="Random 10"
-        />
+        /> */}
       </VStack>
     </Box>
   );

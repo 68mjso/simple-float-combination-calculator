@@ -16,12 +16,6 @@ function Setting() {
   }
   return (
     <VStack w="full" gap={4}>
-      <VStack w="full" bg="brand.300" p={4} shadow="lg">
-        <CustomNumberInput label="Target" value={target} onChange={setTarget} />
-        <CustomNumberInput label="Num of core" value={noc} onChange={setNoc} />
-        <CustomNumberInput label="Min Float" value={min} onChange={setMin} />
-        <CustomNumberInput label="Max Float" value={max} onChange={setMax} />
-      </VStack>
       <VStack w="full" bg="brand.300" p={4} shadow="lg" alignItems="flex-start">
         <Text textAlign="left" fontWeight="bold" color="brand.100">
           Average Float:
@@ -29,6 +23,12 @@ function Setting() {
         <Text fontWeight="bold" color="brand.200">
           {avgValue}
         </Text>
+      </VStack>
+      <VStack w="full" bg="brand.300" p={4} shadow="lg">
+        <CustomNumberInput label="Target" value={target} onChange={setTarget} />
+        <CustomNumberInput label="Num of core" value={noc} onChange={setNoc} />
+        <CustomNumberInput label="Min Float" value={min} onChange={setMin} />
+        <CustomNumberInput label="Max Float" value={max} onChange={setMax} />
       </VStack>
     </VStack>
   );

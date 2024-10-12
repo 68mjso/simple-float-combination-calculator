@@ -12,6 +12,8 @@ interface IAppContext {
   setInventoryList: any;
   inventoryFilter: string;
   setInventoryFilter: any;
+  inputItemList: Array<any>;
+  setInputItemList: any;
 }
 
 const AppContext = createContext<IAppContext | null>(null);
@@ -29,6 +31,7 @@ function AppContextProvider({ children }: AppContextProviderProps) {
   >([]);
   const [inventoryList, setInventoryList] = useState([]);
   const [inventoryFilter, setInventoryFilter] = useState("");
+  const [inputItemList, setInputItemList] = useState([]);
   return (
     <AppContext.Provider
       value={{
@@ -42,6 +45,8 @@ function AppContextProvider({ children }: AppContextProviderProps) {
         setInventoryList,
         inventoryFilter,
         setInventoryFilter,
+        inputItemList,
+        setInputItemList,
       }}
     >
       {children}

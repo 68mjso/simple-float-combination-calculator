@@ -1,9 +1,9 @@
 import AppContext from "@/AppContext";
-import HomeSetting from "@/components/Setting";
 import InputForm from "@/components/InputForm";
 import ResultRow from "@/components/ResultRow";
 import { CombinationResponse } from "@/models/CombinationResponse";
 import { CombinationResult } from "@/models/CombinationResult";
+import { Input } from "@/models/Input";
 import { retrieveCsFloatInventory } from "@/utilities/func";
 import { Box, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
 import socket from "@socket";
@@ -30,12 +30,26 @@ function HomePage() {
       setInventoryList(arr);
     });
   }, []);
-  const handleSubmit = (core: string, input: string) => {
+  const handleSubmit = (core: string, input: Input) => {
+    const floatArr = [];
     setCombinationResultData([]);
     setIsCombinationLoading(true);
+    for (let key of Object.keys(input)) {
+      const val = input[key];
+      try {
+        const converted = JSON.parse(val);
+        for (let i = 0; i < converted.length; i++) {
+          floatArr.push(converted[i]);
+        }
+      } catch (e) {
+        continue;
+      }
+    }
+    console.log(floatArr.map((e) => e.float));
+    appContext.setInputItemList(floatArr);
     socket.emit("calculate-combination", {
       core_arr: core,
-      input_arr: input,
+      input_arr: floatArr.map((e) => e.float).join(","),
     });
   };
   return (
@@ -44,9 +58,7 @@ function HomePage() {
         <Grid templateColumns="repeat(2, 1fr)" gap={4}>
           <GridItem colSpan={{ base: 2, lg: 2 }}>
             <InputForm
-              handleSubmit={(core: string, input: string) => {
-                handleSubmit(core, input);
-              }}
+              handleSubmit={handleSubmit}
               isLoading={isCombinationLoading}
             />
           </GridItem>

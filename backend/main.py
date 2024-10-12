@@ -38,13 +38,13 @@ async def handle_calculate_combination(sid, data):
     target_avg = numpy.float64((config_target - config_min) / diff)
     r = 10 - config_using
 
-    try:
-        f = open("output.txt", "w")
-        f.write("")
-        f.close()
-    except:
-        f = open("output.txt", "x")
-        f.close()
+    # try:
+    #     f = open("output.txt", "w")
+    #     f.write("")
+    #     f.close()
+    # except:
+    #     f = open("output.txt", "x")
+    #     f.close()
     itr = math.floor(len(core_arr) / config_using)
     for i in range(itr):
         time_start = process_time()
@@ -70,6 +70,7 @@ async def handle_calculate_combination(sid, data):
             found=found,
             using_arr=using_arr,
             remain=diff_target,
+            time_start=time_start
         )
         time_stop = process_time()
         if result["result"] == True:
