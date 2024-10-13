@@ -12,6 +12,7 @@ import { useToast } from "@chakra-ui/react";
 function HomePage() {
   const toast = useToast();
   const appContext = React.useContext(AppContext);
+  const [selectedRow, setSelectedRow] = React.useState(-1);
   const {
     isCombinationLoading,
     setIsCombinationLoading,
@@ -58,10 +59,9 @@ function HomePage() {
     });
   };
 
-  const copyToClipboard = (cr: CombinationResult) => {
+  const copyToClipboard = (cr: CombinationResult, i: number) => {
+    setSelectedRow(i);
     const arr = [];
-    console.log(inputItemList);
-    console.log(cr);
     for (let i = 0; i < cr.input_arr.length; i++) {
       const item = inputItemList.find((e) => e.float == cr.input_arr[i]);
       if (!item) {
@@ -103,7 +103,7 @@ function HomePage() {
                       position="absolute"
                       w="full"
                       h="full"
-                      backgroundColor="#cccccc00"
+                      backgroundColor={selectedRow == i ? "green.100" : "#cccccc00"}
                       borderRadius={8}
                       _hover={{
                         cursor: "pointer",
@@ -112,7 +112,7 @@ function HomePage() {
                       }}
                       p={2}
                       justifyContent="flex-end"
-                      onClick={() => copyToClipboard(e)}
+                      onClick={() => copyToClipboard(e, i)}
                     >
                       <MdContentCopy color="#fff" />
                     </Flex>

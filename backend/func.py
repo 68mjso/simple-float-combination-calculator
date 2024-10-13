@@ -89,7 +89,8 @@ def combination_util_sorted(
     time_start,
     timeout,
 ):
-    if process_time() - time_start == timeout:
+    time_diff = round(process_time() - time_start)
+    if time_diff == timeout:
         return {
             "result": True,
             "arr": [],
